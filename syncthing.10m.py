@@ -48,9 +48,14 @@ data = syncthing_api(folder_stat, headers)
 print "🔁"
 print "---"
 
+# Construct menu, folders out of sync are red, otherwise green
 for key, value in data.iteritems():
-    print key
     detail = syncthing_api(folder_info + key, headers)
+    if detail['globalFiles'] == detail['localFiles']:
+        color = 'green'
+    else:
+        color = 'red'
+    print key + "| color=" + color
     print "-- Global files: " + str(detail['globalFiles']) + " Local files: " + str(detail['localFiles'])
     date = value['lastScan']
     date_day = date.rsplit('T')[0]
