@@ -49,7 +49,7 @@ print "🔁"
 print "---"
 
 # Construct menu, folders out of sync are red, otherwise green
-for folder_id, value in data.iteritems():
+for folder_id, value in sorted(data.iteritems()):
     detail = syncthing_api(folder_info + folder_id, headers)
     if detail['globalFiles'] == detail['localFiles']:
         color = 'green'
