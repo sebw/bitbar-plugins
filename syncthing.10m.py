@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # <bitbar.title>Syncthing Folders Status</bitbar.title>
-# <bitbar.version>0.1</bitbar.version>
+# <bitbar.version>0.2</bitbar.version>
 # <bitbar.author>Sebastien Wains</bitbar.author>
 # <bitbar.author.github>sebw</bitbar.author.github>
 # <bitbar.desc>Provides status of Syncthing folders</bitbar.desc>
@@ -11,6 +11,12 @@ import urllib2
 import json
 import ConfigParser
 import os
+
+def syncthing_api(url, headers):
+    req = urllib2.Request(url, None, headers)
+    resp = urllib2.urlopen(req)
+    data = json.load(resp)
+    return data
 
 conf_path = os.path.dirname(os.path.realpath(__file__)) + "/conf/syncthing.ini"
 
@@ -27,19 +33,26 @@ api_strip = api.strip("'")
 url_strip = url.strip("'")
 
 # API function
-rest = "/rest/stats/folder"
+folder_stat_path = "/rest/stats/folder"
+folder_info_path = "/rest/db/status?folder="
 
-url_full = url_strip + rest
+# API URL
+folder_stat = url_strip + folder_stat_path
+folder_info = url_strip + folder_info_path
+
 headers = {'X-API-Key': api_strip}
 
-req = urllib2.Request(url_full, None, headers)
-resp = urllib2.urlopen(req)
-data = json.load(resp)
+# Get list of shared folders with last sync info
+data = syncthing_api(folder_stat, headers)
 
 print "🔁"
 print "---"
 
 for key, value in data.iteritems():
     print key
-    print "Last scan: " + value['lastScan']
-    print "---"
+    detail = syncthing_api(folder_info + key, headers)
+    print "-- Global files: " + str(detail['globalFiles']) + " Local files: " + str(detail['localFiles'])
+    date = value['lastScan']
+    date_day = date.rsplit('T')[0]
+    date_hour = date.rsplit('T')[1].rsplit('.')[0]
+    print "-- Last scan: " + date_day + " " + date_hour
