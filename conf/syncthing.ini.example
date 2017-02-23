@@ -1,0 +1,5 @@
+# API Key is found in settings in the GUI
+# Remove the extension .example after editing
+[main]
+api: '123456'
+url: 'http://127.0.0.1:8384'
