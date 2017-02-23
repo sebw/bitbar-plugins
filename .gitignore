@@ -93,3 +93,7 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+gfinance.60m.py
+
+load.10s.sh
