@@ -1,3 +1,9 @@
+# VIM swap files
+*.swp
+
+# Bitbar config files containing sensitive info
+*.ini
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
