@@ -36,7 +36,7 @@ req = urllib2.Request(url_full, None, headers)
 resp = urllib2.urlopen(req)
 data = json.load(resp)
 
-print "Sync"
+print "🔁"
 print "---"
 
 for key, value in data.iteritems():
