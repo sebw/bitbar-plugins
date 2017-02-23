@@ -56,7 +56,8 @@ for folder_id, value in data.iteritems():
     else:
         color = 'red'
     print folder_id + "| color=" + color
-    print "-- Global files: " + str(detail['globalFiles']) + " Local files: " + str(detail['localFiles'])
+    print "-- Global files: " + str(detail['globalFiles'])
+    print "-- Local files: " + str(detail['localFiles'])
     date = value['lastScan']
     date_day = date.rsplit('T')[0]
     date_hour = date.rsplit('T')[1].rsplit('.')[0]
