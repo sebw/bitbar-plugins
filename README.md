@@ -7,6 +7,12 @@ Place scripts under Bitbar plugin folder (Preferences > Open Plugin Folder). Con
 
 If the plugin name is `awesome.1m.sh`, its configuration should be placed under `conf/awesome.ini`
 
-#### Plugin list
+If you `git clone` this repository directly in your plugin folder, remove this `README.md` or Bitbar will give a `launch path is not accessible` error.
 
-syncthing.10m.py: displays [Syncthing](https://syncthing.net/) shared folder status (name, last scan)
+#### Plugins list
+
+* syncthing.10m.py
+
+Displays [Syncthing](https://syncthing.net/) shared folder status (name, last scan)
+
+![](https://raw.githubusercontent.com/sebw/bitbar-plugins/master/syncthing.png)

@@ -5,6 +5,7 @@
 # <bitbar.author>Sebastien Wains</bitbar.author>
 # <bitbar.author.github>sebw</bitbar.author.github>
 # <bitbar.desc>Provides status of Syncthing folders</bitbar.desc>
+# <bitbar.image>https://raw.githubusercontent.com/sebw/bitbar-plugins/master/syncthing.png</bitbar.image>
 # <bitbar.dependencies>python</bitbar.dependencies>
 
 import urllib2
