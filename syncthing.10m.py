@@ -61,4 +61,4 @@ for folder_id, value in sorted(data.iteritems()):
     date = value['lastScan']
     date_day = date.rsplit('T')[0]
     date_hour = date.rsplit('T')[1].rsplit('.')[0]
-    print "-- Last scan: " + date_day + " " + date_hour
+    print "-- Last scan: " + date_day + " " + date_hour  + "| href=" + url_strip
