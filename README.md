@@ -13,4 +13,4 @@ If the plugin name is `awesome.1m.sh`, its configuration should be placed under 
 
 Displays [Syncthing](https://syncthing.net/) shared folder status (name, last scan)
 
-![](https://raw.githubusercontent.com/sebw/bitbar-plugins/master/syncthing.png)
+![](https://raw.githubusercontent.com/sebw/bitbar-plugins/a5fc56dac9786143585010bd402162f3cd051ff4/syncthing.png)
