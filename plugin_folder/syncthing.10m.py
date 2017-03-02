@@ -1,7 +1,7 @@
 #!/usr/bin/env PYTHONIOENCODING=UTF-8 python
 # -*- coding: utf-8 -*-
 # <bitbar.title>Syncthing Folders Status</bitbar.title>
-# <bitbar.version>0.2</bitbar.version>
+# <bitbar.version>0.3</bitbar.version>
 # <bitbar.author>Sebastien Wains</bitbar.author>
 # <bitbar.author.github>sebw</bitbar.author.github>
 # <bitbar.desc>Provides status of Syncthing folders</bitbar.desc>
@@ -68,10 +68,15 @@ system_version_info = syncthing_api(system_version, headers)
 myID = system_status_info['myID']
 
 print "⇵"
+
+# Construct menu: system information
+print "---"
+print "Syncthing " + system_version_info['version'] + "| href=" + url_strip
+
 print "---"
 
 # Construct menu: folders out of sync are red, otherwise green
-print "Folders: | color = white"
+print "Folders: | color = black"
 for folder_id, value in sorted(data.iteritems()):
     detail = syncthing_api(folder_info + folder_id, headers)
     if detail['globalFiles'] == detail['localFiles']:
@@ -89,28 +94,23 @@ for folder_id, value in sorted(data.iteritems()):
     date = value['lastScan']
     date_day = date.rsplit('T')[0]
     date_hour = date.rsplit('T')[1].rsplit('.')[0]
-    print "-- Last scan: " + date_day + " " + date_hour  + "| href=" + url_strip
+    print "-- Last scan: " + date_day + " " + date_hour
     if value['lastFile']['filename'] != '':
         print "-- Last received file: " + value['lastFile']['filename'].encode('ascii', 'ignore')
 
 # Construct menu: devices
 print "---"
-print "Remote Devices: | color = white"
+print "Remote Devices: | color = black"
 connections = syncthing_api(system_connections, headers)
 for device in sorted(system_config_info['devices']):
     if device.get('deviceID') != myID:
         online = connections['connections'][device.get('deviceID')]['connected']
         paused = connections['connections'][device.get('deviceID')]['paused']
         if online == 1 and paused == 0:
-            print '- ' + device.get('name') + '| color = white'
+            print '- ' + device.get('name') + '| color = black'
         if online == 0 and paused == 0:
             print '- ' + device.get('name') + ' (offline)'
         if online == 1 and paused == 1:
             print '- ' + device.get('name') + ' (paused)'
         if online == 0 and paused == 1:
             print '- ' + device.get('name') + ' (offline, paused)'
-
-# Construct menu: system information
-print "---"
-print "System: | color = white"
-print system_version_info['version']
