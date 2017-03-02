@@ -38,7 +38,6 @@ folder_stat_path = "/rest/stats/folder"
 folder_info_path = "/rest/db/status?folder="
 system_config_path = "/rest/system/config"
 system_status_path = "/rest/system/status"
-#system_upgrade_path = "/rest/system/upgrade"
 system_version_path = "/rest/system/version"
 system_connections_path = "/rest/system/connections"
 
@@ -47,7 +46,6 @@ folder_stat = url_strip + folder_stat_path
 folder_info = url_strip + folder_info_path
 system_config = url_strip + system_config_path
 system_status = url_strip + system_status_path
-#system_upgrade = url_strip + system_upgrade_path
 system_version = url_strip + system_version_path
 system_connections = url_strip + system_connections_path
 
@@ -66,7 +64,6 @@ for folder in system_config_info['folders']:
 
 # Get system information
 system_status_info = syncthing_api(system_status, headers)
-#system_upgrade_info = syncthing_api(system_upgrade, headers)
 system_version_info = syncthing_api(system_version, headers)
 myID = system_status_info['myID']
 
@@ -86,7 +83,6 @@ for folder_id, value in sorted(data.iteritems()):
     if folder_id == folder_labels[folder_id]:
         print '- ' + folder_id + "| color=" + color
     else:
-#       print '- ' + folder_labels[folder_id] + " (" + folder_id + ")" + "| color=" + color
         print '- ' + folder_labels[folder_id] + "| color=" + color
     print "-- Global: files " + str(detail['globalFiles']) + " - directories " + str(detail['globalDirectories'])
     print "-- Local: files " + str(detail['localFiles']) + " - directories " + str(detail['localDirectories'])
@@ -118,4 +114,3 @@ for device in sorted(system_config_info['devices']):
 print "---"
 print "System: | color = white"
 print system_version_info['version']
-#print myID
