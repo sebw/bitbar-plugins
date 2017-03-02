@@ -1,4 +1,4 @@
-#!/usr/bin/env PYTHONIOENCODING=UTF-8 /usr/local/bin/python
+#!/usr/bin/env PYTHONIOENCODING=UTF-8 python
 # -*- coding: utf-8 -*-
 # <bitbar.title>Syncthing Folders Status</bitbar.title>
 # <bitbar.version>0.2</bitbar.version>
