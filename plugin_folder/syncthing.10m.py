@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env PYTHONIOENCODING=UTF-8 python
 # -*- coding: utf-8 -*-
 # <bitbar.title>Syncthing Folders Status</bitbar.title>
 # <bitbar.version>0.2</bitbar.version>
@@ -33,33 +33,84 @@ url = Config.get("main", "url")
 api_strip = api.strip("'")
 url_strip = url.strip("'")
 
-# API function
+# API functions
 folder_stat_path = "/rest/stats/folder"
 folder_info_path = "/rest/db/status?folder="
+system_config_path = "/rest/system/config"
+system_status_path = "/rest/system/status"
+system_version_path = "/rest/system/version"
+system_connections_path = "/rest/system/connections"
 
-# API URL
+# API URLs
 folder_stat = url_strip + folder_stat_path
 folder_info = url_strip + folder_info_path
+system_config = url_strip + system_config_path
+system_status = url_strip + system_status_path
+system_version = url_strip + system_version_path
+system_connections = url_strip + system_connections_path
 
 headers = {'X-API-Key': api_strip}
 
 # Get list of shared folders with last sync info
 data = syncthing_api(folder_stat, headers)
 
-print "🔁"
+# Get system configuration (containing folder labels)
+system_config_info = syncthing_api(system_config, headers)
+
+# Get folder labels
+folder_labels = {}
+for folder in system_config_info['folders']:
+    folder_labels[folder.get('id')] = folder.get('label')
+
+# Get system information
+system_status_info = syncthing_api(system_status, headers)
+system_version_info = syncthing_api(system_version, headers)
+myID = system_status_info['myID']
+
+print "⇵"
 print "---"
 
-# Construct menu, folders out of sync are red, otherwise green
+# Construct menu: folders out of sync are red, otherwise green
+print "Folders: | color = white"
 for folder_id, value in sorted(data.iteritems()):
     detail = syncthing_api(folder_info + folder_id, headers)
     if detail['globalFiles'] == detail['localFiles']:
         color = 'green'
     else:
         color = 'red'
-    print folder_id + "| color=" + color
+    if folder_labels[folder_id] == '':
+        folder_labels[folder_id] = folder_id
+    if folder_id == folder_labels[folder_id]:
+        print '- ' + folder_id + "| color=" + color
+    else:
+        print '- ' + folder_labels[folder_id] + "| color=" + color
     print "-- Global: files " + str(detail['globalFiles']) + " - directories " + str(detail['globalDirectories'])
     print "-- Local: files " + str(detail['localFiles']) + " - directories " + str(detail['localDirectories'])
     date = value['lastScan']
     date_day = date.rsplit('T')[0]
     date_hour = date.rsplit('T')[1].rsplit('.')[0]
     print "-- Last scan: " + date_day + " " + date_hour  + "| href=" + url_strip
+    if value['lastFile']['filename'] != '':
+        print "-- Last received file: " + value['lastFile']['filename'].encode('ascii', 'ignore')
+
+# Construct menu: devices
+print "---"
+print "Remote Devices: | color = white"
+connections = syncthing_api(system_connections, headers)
+for device in sorted(system_config_info['devices']):
+    if device.get('deviceID') != myID:
+        online = connections['connections'][device.get('deviceID')]['connected']
+        paused = connections['connections'][device.get('deviceID')]['paused']
+        if online == 1 and paused == 0:
+            print '- ' + device.get('name') + '| color = white'
+        if online == 0 and paused == 0:
+            print '- ' + device.get('name') + ' (offline)'
+        if online == 1 and paused == 1:
+            print '- ' + device.get('name') + ' (paused)'
+        if online == 0 and paused == 1:
+            print '- ' + device.get('name') + ' (offline, paused)'
+
+# Construct menu: system information
+print "---"
+print "System: | color = white"
+print system_version_info['version']
