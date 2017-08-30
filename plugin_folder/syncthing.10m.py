@@ -12,10 +12,15 @@ import urllib2
 import json
 import ConfigParser
 import os
+import ssl
 
+# Skipping verify with SSL Self-Signed CERTIFICATE
 def syncthing_api(url, headers):
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
     req = urllib2.Request(url, None, headers)
-    resp = urllib2.urlopen(req)
+    resp = urllib2.urlopen(req, context=ctx)
     data = json.load(resp)
     return data
 
